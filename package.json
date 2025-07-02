@@ -1,0 +1,67 @@
+{
+  "name": "project-manager",
+  "version": "1.0.0",
+  "description": "نظام إدارة المشاريع المتكامل - تطبيق ويب حديث لإدارة المشاريع والمهام مع مخطط جانت ونظام التنبيهات",
+  "main": "index.html",
+  "scripts": {
+    "start": "python3 -m http.server 8080",
+    "serve": "npx serve .",
+    "build": "echo 'No build process needed for vanilla HTML/CSS/JS'",
+    "test": "echo 'Tests will be added in future versions'",
+    "lint": "echo 'Linting will be added in future versions'",
+    "deploy": "gh-pages -d .",
+    "validate": "html5validator --root . --also-check-css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/username/project-manager.git"
+  },
+  "keywords": [
+    "project-management",
+    "task-management",
+    "gantt-chart",
+    "arabic",
+    "rtl",
+    "vanilla-js",
+    "responsive",
+    "pwa",
+    "إدارة-المشاريع",
+    "إدارة-المهام",
+    "مخطط-جانت"
+  ],
+  "author": {
+    "name": "Manus AI",
+    "email": "support@manus.ai",
+    "url": "https://manus.ai"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/username/project-manager/issues"
+  },
+  "homepage": "https://username.github.io/project-manager",
+  "devDependencies": {
+    "gh-pages": "^6.0.0",
+    "html5validator": "^0.4.2",
+    "serve": "^14.2.1"
+  },
+  "dependencies": {},
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead",
+    "not ie 11"
+  ],
+  "files": [
+    "index.html",
+    "css/",
+    "js/",
+    "assets/",
+    "components/",
+    "README.md",
+    "LICENSE"
+  ]
+}
+

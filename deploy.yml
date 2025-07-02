@@ -1,0 +1,104 @@
+name: Deploy Project Manager to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: |
+        npm install --only=dev
+        
+    - name: Validate HTML structure
+      run: |
+        echo "Validating HTML structure..."
+        # Basic HTML validation
+        if ! grep -q "<!DOCTYPE html>" index.html; then
+          echo "Error: Missing DOCTYPE declaration"
+          exit 1
+        fi
+        if ! grep -q "<html lang=\"ar\"" index.html; then
+          echo "Error: Missing or incorrect lang attribute"
+          exit 1
+        fi
+        echo "HTML validation passed"
+        
+    - name: Check CSS files
+      run: |
+        echo "Checking CSS files..."
+        for file in css/*.css; do
+          if [ -f "$file" ]; then
+            echo "Found CSS file: $file"
+          fi
+        done
+        
+    - name: Check JavaScript files
+      run: |
+        echo "Checking JavaScript files..."
+        for file in js/*.js; do
+          if [ -f "$file" ]; then
+            echo "Found JS file: $file"
+            # Basic syntax check
+            node -c "$file" || exit 1
+          fi
+        done
+        
+    - name: Optimize files for production
+      run: |
+        echo "Optimizing files for production..."
+        # Create optimized version (optional)
+        # This step can be expanded to include minification
+        
+    - name: Setup Pages
+      if: github.ref == 'refs/heads/main'
+      uses: actions/configure-pages@v4
+      
+    - name: Upload artifact
+      if: github.ref == 'refs/heads/main'
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: ./
+        
+    - name: Deploy to GitHub Pages
+      if: github.ref == 'refs/heads/main'
+      id: deployment
+      uses: actions/deploy-pages@v4
+
+  lighthouse:
+    runs-on: ubuntu-latest
+    needs: deploy
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Run Lighthouse CI
+      uses: treosh/lighthouse-ci-action@v10
+      with:
+        urls: |
+          https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}
+        configPath: './.lighthouserc.json'
+        uploadArtifacts: true
+        temporaryPublicStorage: true
+
